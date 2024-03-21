@@ -1,20 +1,66 @@
 <?php
-    $email;
-        if (isset($_COOKIE['cookie'])) {
-        foreach ($_COOKIE['cookie'] as $name => $value) {
-            $name = htmlspecialchars($name);
-            $value = htmlspecialchars($value);
-            $email = $value;
-        }
+session_start();
+
+$email = '';
+
+if (isset($_COOKIE['cookie'])) {
+    foreach ($_COOKIE['cookie'] as $name => $value) {
+        $name = htmlspecialchars($name);
+        $value = htmlspecialchars($value);
+        $email = $value;
+    }
 }
-        $age = $_POST['age'];
-        $dob = $_POST['dob'];
-        $contact = $_POST['contact'];
-        $conn = new mysqli("localhost", "root", "", "login");
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
+
+class UserData {
+    public $age;
+    public $dob;
+    public $email;
+    public $contact;
+}
+
+require "../assets/vendor/autoload.php";
+
+if (isset($_POST['age']) && isset($_POST['dob']) && isset($_POST['contact'])) {
+    $age = $_POST['age'];
+    $dob = $_POST['dob'];
+    $contact = $_POST['contact'];
+
+
+    $mongoClient = new MongoDB\Client("mongodb://localhost:27017");
+
+    $collection = $mongoClient->login->details;
+
+    $userData = $collection->findOne(['email' => $email]);
+
+    if (!$userData) {
+        $userData = new UserData();
+        $userData->age = $age;
+        $userData->dob = $dob;
+        $userData->email = $email;
+        $userData->contact = $contact;
+
+        $insertResult = $collection->insertOne((array)$userData);
+
+        if ($insertResult->getInsertedCount() > 0) {
+            header("Location: homepage.php");
+            exit();
+        } else {
+            echo "Error: Failed to insert document";
         }
-        $sql = mysqli_query($conn,"UPDATE details SET age = '$age', dob = '$dob',contact = '$contact' WHERE email = '$email'");
-        header("Location: homepage.php");
-        exit();
+    } else {
+        $updateResult = $collection->updateOne(
+            ['email' => $email],
+            ['$set' => ['age' => $age, 'dob' => $dob, 'contact' => $contact]]
+        );
+
+        if ($updateResult->getModifiedCount() > 0) {
+            header("Location: homepage.php");
+            exit();
+        } else {
+            echo "Error: Failed to update document";
+        }
+    }
+} else {
+    echo "Error: Age, dob, or contact not provided";
+}
 ?>

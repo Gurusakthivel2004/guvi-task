@@ -6,7 +6,7 @@
     $dob = '';
     $contact = '';
 
-    require "../vendor/autoload.php";
+    require "../assets/vendor/autoload.php";
 
     $conn = new mysqli("localhost", "root", "", "login");
     if ($conn->connect_error) {

@@ -9,19 +9,19 @@ document.getElementById("register_button").onclick = (e) => {
   localStorage.setItem("name", $("#name").val());
   $.ajax({
     method: "POST",
-    url: "http://localhost/login/php/register_handler.php",
+    url: "http://localhost/login/php/register.php",
     data: formData,
     dataType: "json",
   })
     .done(function (data) {
       if (data.success) {
-        window.location.href = "http://localhost/login/php/homepage.php";
+        window.location.href = "http://localhost/login/php/profile.php";
       } else {
         console.log(data.message);
       }
     })
     .fail((xhr, status, error) => {
-      window.location.href = "http://localhost/login/php/homepage.php";
+      window.location.href = "http://localhost/login/php/profile.php";
       console.log(xhr.responseText);
     });
 };
