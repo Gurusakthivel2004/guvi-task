@@ -65,7 +65,12 @@
                     <div class="card text-black" style="border-radius: 25px;">
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center text-center">
-
+                                <div class="bg-red ml-auto w-full">
+                                    <button class="btn-danger text-white p-2"
+                                        style="margin-left:-90%;border-radius:15px;"><a
+                                            style=" text-decoration:none;color:white;" class="text-none"
+                                            href=" ../index.html">Logout</a></button>
+                                </div>
                                 <div class="col-md-12 col-lg-12 col-xl-12 text-center ">
 
                                     <p class="text-center w-full h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">User Details</p>
@@ -117,8 +122,12 @@
 
 
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <a href="../profile_update.html">Update Profile</a>
+
+                                        <button class="btn-primary text-white p-2" style="border-radius:15px;">
+                                            <a style=" text-decoration:none;color:white;" href="../profile.html">Update
+                                                Profile</a>
                                     </div>
+
 
                                 </div>
 
